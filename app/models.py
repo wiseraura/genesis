@@ -9,6 +9,7 @@ from modelcluster.tags import ClusterTaggableManager
 from .block import BodyBlock
 from wagtail.fields import StreamField
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+from django.core.paginator import PageNotAnInteger,EmptyPage,Paginator
 
 
 class Home(RoutablePageMixin, Page):
@@ -20,7 +21,15 @@ class Home(RoutablePageMixin, Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
         context['home'] = self
-        context['articles'] = self.articles
+        pagenator = Paginator(self.articles,2)
+        page = request.GET.get('page')
+        try:
+            articles = pagenator.page(page)
+        except PageNotAnInteger:
+            articles = pagenator.page(1)
+        except EmptyPage:
+            articles = pagenator.object_list.none()    
+        context['articles'] = articles
         return context
 
     def get_articles(self):
@@ -33,7 +42,7 @@ class Home(RoutablePageMixin, Page):
     
     @route(r'^category/(?P<category>[\w-]+)/$')
     def post_by_category(self, request, category):
-        self.articles = self.get_articles().filter(category__category__name = category)
+        self.articles = self.get_articles().filter(categories__category__name = category)
         return self.render(request)
     
     @route(r'^$')

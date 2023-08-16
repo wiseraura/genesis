@@ -8,6 +8,7 @@ def category_list(context):
     categories = Category.objects.all()
     return {
         'request': context['request'],
+        'home': context['home'],
         'categories': categories
     }
 
@@ -16,6 +17,7 @@ def tag_list(context):
     tags = Tag.objects.all()
     return {
         'request': context['request'],
+        'home': context['home'],
         'tags': tags
     }
 
