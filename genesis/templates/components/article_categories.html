@@ -1,0 +1,12 @@
+<div class="widget">
+    <div class="section-title">
+        <h5>Categories</h5>
+    </div>
+    <ul class="widget-categories">
+        <li>
+            {% for category in article_categories %}
+            <a href="#" class="categorie">{{category.category.name}}</a>
+            {% endfor %}
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,14 @@
+<div class="widget">
+    <div class="section-title">
+        <h5>Tags</h5>
+    </div>
+    <div class="widget-tags">
+        <ul class="list-inline">
+            {% for tag in article_tags %}
+            <li>
+                <a href="">{{tag.name}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

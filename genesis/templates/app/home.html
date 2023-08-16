@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static wagtailcore_tags wagtailimages_tags templates_tags %}
+<br>
+<br>
+<br>
+{% block content %}
+<!--blog-grid-->
+<section class="blog-grid">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8 mt-30">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <!--Post-1-->
+                        {% for post in articles %}
+                        <div class="post-card">
+                            <div class="post-card-image">
+                                {% if post.header_image %}
+                                <a href="{% pageurl post %}">
+                                    {% image post.header_image original as header_image %}
+                                    <img src="{{header_image.url}}" alt="">
+                                </a>
+                                {% endif %}
+                            </div>
+                            <div class="post-card-content">
+                                {% for category in post.categories.all %}
+                                    <a href="#" class="categorie">{{category.category.name}}</a>
+                                {% empty %}
+                                    <p>No categories found.</p>
+                                {% endfor %}
+                                <h5>
+                                    <a href="{% pageurl post %}">{{post.title}}</a>
+                                </h5>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                     Odit quam atque ipsa laborum sunt distinctio...</p>
+                                <div class="post-card-info">
+                                    <ul class="list-inline">
+                                        <li>
+                                            <a href="author.html">
+                                                <img src="{% static 'assets/img/author/1.jpg' %}" alt="">
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="author.html">David Smith</a>
+                                        </li>
+                                        <li class="dot"></li>
+                                        <li>{{post.last_published_at}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!--/-->
+                    </div>
+                    
+                    <!--pagination-->
+                    {% include "components/pageination.html" %}
+                </div>
+            </div>
+            <div class="col-lg-4 max-width">
+                <!--widget-latest-posts-->
+                <!--/-->
+                <!--widget-categories-->
+                {% category_list %}
+                <!--widget-tags-->
+                {% tag_list %}
+                <!--/-->
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

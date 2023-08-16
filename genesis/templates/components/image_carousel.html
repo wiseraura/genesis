@@ -1,0 +1,10 @@
+{% load wagtailimages_tags %}
+<br>
+<div class="owl-carousel">
+    {% for item in block.value %}
+    <div class="image">
+        {% image item fill-800x600 as image %}
+      <img src="{{image.url}}" alt="" />
+    </div>
+    {% endfor %}
+  </div>

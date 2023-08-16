@@ -1,0 +1,106 @@
+{% extends 'base.html' %} 
+{% load static wagtailcore_tags wagtailimages_tags templates_tags %}
+{% block content %}
+<!--post-default-->
+<section class="section pt-55">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-8 mb-20">
+        <!--Post-single-->
+        <div class="post-single">
+            <div class="row">
+              {% if page.header_image %}
+              <div class="col-md-12">
+                <div class="image">
+                  {% image page.header_image original as header_image %}
+                  <img src="{{header_image.url}}" alt="" />
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          <br>
+          <br>
+          <div class="post-single-content">
+          <!-- {% for category in page.categories.all %}
+            <a href="#" class="categorie">{{category.category.name}}</a>
+          {% empty %}
+            <p>No categories found.</p>
+          {% endfor %} -->
+            <h4>
+              {{page.title}}
+            </h4>
+            <div class="post-single-info">
+              <ul class="list-inline">
+                <li>
+                  <a href="author.html"
+                    ><img src="{% static 'assets/img/author/1.jpg' %}" alt=""
+                  /></a>
+                </li>
+                <li><a href="author.html">David Smith</a></li>
+                <li class="dot"></li>
+                <li>January 15, 2021</li>
+                <li class="dot"></li>
+                <li>3 comments</li>
+              </ul>
+            </div>
+          </div>
+
+          {% include "app/block/streamfield.html" %}
+
+          <div class="post-single-footer">
+            <div class="tags">
+              <!-- <ul class="list-inline">
+                {% for tag in page.tag.all %}
+                  <li>
+                    <a href="blog-grid.html">{{tag}}</a>
+                  </li>
+                  {% empty %}
+                  <li>No tags found.</li>
+                {% endfor %}
+              </ul> -->
+            </div>
+            <div class="social-media">
+              <ul class="list-inline">
+                <li>
+                  <a href="#" class="color-facebook">
+                    <i class="fab fa-facebook"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="color-instagram">
+                    <i class="fab fa-instagram"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="color-twitter">
+                    <i class="fab fa-twitter"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="color-youtube">
+                    <i class="fab fa-youtube"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="color-pinterest">
+                    <i class="fab fa-pinterest"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!--/-->
+        <!--widget-comments-->
+        {% include "components/comments.html" %}
+      </div>
+      <div class="col-lg-4 max-width">
+        <!--widget-categories-->
+        {% article_category_list %}
+        <!--widget-tags-->
+        {% article_tag_list %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
