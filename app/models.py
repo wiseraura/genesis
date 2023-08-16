@@ -10,6 +10,7 @@ from .block import BodyBlock
 from wagtail.fields import StreamField
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
+
 class Home(RoutablePageMixin, Page):
     description = models.CharField(max_length=500, blank=True)
     content_panels = Page.content_panels + [
@@ -40,6 +41,7 @@ class Home(RoutablePageMixin, Page):
         self.articles = self.get_articles()
         return self.render(request)
 
+
 class Article(Page):
     header_image = models.ForeignKey(
         'wagtailimages.Image',
@@ -62,6 +64,7 @@ class Article(Page):
         context['article'] = self.get_parent().specific
         return context
 
+
 class ArticleCategory(models.Model):
     page = ParentalKey(
         "app.Article",
@@ -82,12 +85,14 @@ class ArticleCategory(models.Model):
     class Meta:
         unique_together = (('page', 'category'))
 
+
 class ArticleTag(TaggedItemBase):
     content_object = ParentalKey(
         "Article", 
         blank=True, 
         related_name='article_tag'
     )
+
 
 @register_snippet
 class Category(models.Model):
@@ -104,6 +109,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
 
 @register_snippet
 class Tag(TaggitTag):
