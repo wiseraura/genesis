@@ -10,6 +10,10 @@ from .block import BodyBlock
 from wagtail.fields import StreamField
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from django.core.paginator import PageNotAnInteger,EmptyPage,Paginator
+from datetime import datetime
+from django.http import Http404
+from django.utils.functional import cached_property
+from wagtail.search import index
 
 
 class Home(RoutablePageMixin, Page):
@@ -33,8 +37,27 @@ class Home(RoutablePageMixin, Page):
         return context
 
     def get_articles(self):
-        return Article.objects.descendant_of(self).live()
+        return Article.objects.descendant_of(self).live().order_by("-post_date")
     
+    @route(r'^(\d{4})/$')
+    @route(r'^(\d{4})/(\d{2})/$')
+    @route(r'^(\d{4})/(\d{2})/(\d{2})/$')
+    def post_by_date(self, request, year, month=None, day=None, *args, **kwargs):
+        self.articles = self.get_articles().filter(post_date__year = year)
+        if month:
+            self.articles = self.articles.filter(post_date__month = month)
+        if day:
+            self.articles = self.articles.filter(post_date__day = day)
+        return self.render(request)
+
+    @route(r'^(\d{4})/(\d{2})/(\d{2})/(.+)/$')
+    def post_by_date_name(self, request, year, month, day, slug, *args, **kwargs):
+        article = self.get_articles().filter(slug = slug).first()
+        if not article:
+            raise Http404
+        return article.serve(request)
+
+
     @route(r'^tag/(?P<tag>[\w-]+)/$')
     def post_by_tag(self, request, tag):
         self.articles = self.get_articles().filter(tag__name = tag)
@@ -49,6 +72,14 @@ class Home(RoutablePageMixin, Page):
     def all_articles(self, request):
         self.articles = self.get_articles()
         return self.render(request)
+    
+    @route(r'search/$')
+    def search(self, request):
+        search_query = request.GET.get('q', None)
+        self.articles = self.get_articles()
+        if search_query:
+            self.articles = self.articles.search(search_query)
+        return self.render(request)
 
 
 class Article(Page):
@@ -61,17 +92,35 @@ class Article(Page):
     )
     tag = ClusterTaggableManager(through='ArticleTag', blank=True)
     body = StreamField(BodyBlock(), blank=True, use_json_field=True)
+    post_date = models.DateTimeField(verbose_name="post date", default=datetime.today)
     content_panels = Page.content_panels + [
         FieldPanel("header_image"),
         FieldPanel("tag"),
         InlinePanel("categories", label="category"),
         FieldPanel("body"),
     ]
+    settings_panels = Page.settings_panels + [
+        FieldPanel("post_date")
+    ]
+    search_fields = Page.search_fields + [
+        index.SearchField('body'),
+        index.SearchField('title'),
+    ]
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        context['article'] = self.get_parent().specific
+        context['home'] = self.home
         return context
+
+    @cached_property
+    def home(self):
+        return self.get_parent().specific
+
+    @cached_property
+    def canonical_url(self):
+        from .templatetags.templates_tags import article_date_name_url
+        home = self.home
+        return article_date_name_url(self, home)
 
 
 class ArticleCategory(models.Model):

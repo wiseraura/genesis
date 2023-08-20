@@ -38,3 +38,17 @@ def article_tag_list(context):
         "request": context['request'],
         "article_tags": article_tags
     }
+
+@register.simple_tag()
+def article_date_name_url(article, home):
+    post_date = article.post_date
+    url = home.full_url + home.reverse_subpage(
+        'post_by_date_name',
+        args = [
+            post_date.year, 
+            "{0:02}".format(post_date.month), 
+            "{0:02}".format(post_date.day),
+            article.slug
+        ]
+    )
+    return url

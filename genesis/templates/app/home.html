@@ -16,7 +16,7 @@
                         <div class="post-card">
                             <div class="post-card-image">
                                 {% if post.header_image %}
-                                <a href="{% pageurl post %}">
+                                <a href="{% article_date_name_url post home %}">
                                     {% image post.header_image original as header_image %}
                                     <img src="{{header_image.url}}" alt="">
                                 </a>
@@ -29,7 +29,7 @@
                                     <p>No categories found.</p>
                                 {% endfor %}
                                 <h5>
-                                    <a href="{% pageurl post %}">{{post.title}}</a>
+                                    <a href="{% article_date_name_url post home %}">{{post.title}}</a>
                                 </h5>
                                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
                                      Odit quam atque ipsa laborum sunt distinctio...</p>
