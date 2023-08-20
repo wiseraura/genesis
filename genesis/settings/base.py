@@ -25,7 +25,6 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 INSTALLED_APPS = [
     "app",
-    "home",
     "search",
     "wagtail.contrib.routable_page",
     "wagtail.contrib.forms",
@@ -41,6 +40,8 @@ INSTALLED_APPS = [
     "wagtail",
     "modelcluster",
     "taggit",
+    "crispy_forms",
+    "crispy_bootstrap5",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -48,6 +49,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS="bootstrap5"
+CRISPY_TEMPLATE_PACK="bootstrap5"
 
 MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
