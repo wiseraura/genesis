@@ -14,6 +14,7 @@ from datetime import datetime
 from django.http import Http404
 from django.utils.functional import cached_property
 from wagtail.search import index
+from wagtail.contrib.forms.models import AbstractForm, AbstractFormField
 
 
 class Home(RoutablePageMixin, Page):
@@ -173,3 +174,22 @@ class Category(models.Model):
 class Tag(TaggitTag):
     class Meta:
         proxy = True
+
+
+class FormField(AbstractFormField):
+    page = ParentalKey("FormPage", on_delete=models.CASCADE, related_name="form_fields")
+
+
+class FormPage(AbstractForm):
+    content_panels = AbstractForm.content_panels + [
+        InlinePanel("form_fields", label="Form Fields"),
+    ]
+
+    @cached_property
+    def home(self):
+        return self.get_parent().specific
+    
+    def get_context(self, request, *args, **kwargs):
+        context = super(FormPage, self).get_context(request, *args, **kwargs)
+        context['home'] = self.home
+        return context
