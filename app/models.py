@@ -15,6 +15,7 @@ from django.http import Http404
 from django.utils.functional import cached_property
 from wagtail.search import index
 from wagtail.contrib.forms.models import AbstractForm, AbstractFormField
+from wagtailmetadata.models import MetadataPageMixin
 
 
 class Home(RoutablePageMixin, Page):
@@ -83,7 +84,7 @@ class Home(RoutablePageMixin, Page):
         return self.render(request)
 
 
-class Article(Page):
+class Article(MetadataPageMixin, Page):
     header_image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,

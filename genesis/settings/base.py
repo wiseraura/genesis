@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     "wagtail.contrib.routable_page",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
-    #"wagtail.contrib.modeladmin",
+    "wagtailmetadata",
     "wagtail_modeladmin",
     "wagtailmenus",
     "wagtail.embeds",
@@ -51,8 +51,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sitemaps",
+    "django_comments",
+    "django_contrib.sites",
 ]
-
+SITE_ID=1
 CRISPY_ALLOWED_TEMPLATE_PACKS="bootstrap5"
 CRISPY_TEMPLATE_PACK="bootstrap5"
 
