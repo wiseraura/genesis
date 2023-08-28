@@ -53,9 +53,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",
     "django_comments",
-    "django_contrib.sites",
+    "django.contrib.sites",
+    "custom_comments",
 ]
 SITE_ID=1
+COMMENTs_APP="custom_comments"
 CRISPY_ALLOWED_TEMPLATE_PACKS="bootstrap5"
 CRISPY_TEMPLATE_PACK="bootstrap5"
 

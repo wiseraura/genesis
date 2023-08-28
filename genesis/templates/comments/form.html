@@ -1,0 +1,20 @@
+{% load crispy_forms_tags comments %}
+
+<form
+  class="widget-form"
+  action="{% comment_form_target %}?next={{form.target_object.url}}"
+  method="post"
+>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        {% csrf_token %}
+        {{form|crispy}}
+      </div>
+    </div>
+    <input type="hidden" name="next" value="{{form.target_object.url}}">
+    <div class="col-12">
+      <input type="submit" name="POST" class="btn-custom" value="POST">
+    </div>
+  </div>
+</form>

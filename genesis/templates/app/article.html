@@ -1,5 +1,5 @@
 {% extends 'base.html' %} 
-{% load static wagtailcore_tags wagtailimages_tags templates_tags %}
+{% load static wagtailcore_tags wagtailimages_tags templates_tags comments %}
 {% block content %}
 <!--post-default-->
 <section class="section pt-55">
@@ -48,41 +48,30 @@
           {% include "app/block/streamfield.html" %}
 
           <div class="post-single-footer">
-            <div class="tags">
-              <!-- <ul class="list-inline">
-                {% for tag in page.tag.all %}
-                  <li>
-                    <a href="blog-grid.html">{{tag}}</a>
-                  </li>
-                  {% empty %}
-                  <li>No tags found.</li>
-                {% endfor %}
-              </ul> -->
-            </div>
             <div class="social-media">
               <ul class="list-inline">
                 <li>
-                  <a href="#" class="color-facebook">
+                  <a href="facebook.com" class="color-facebook">
                     <i class="fab fa-facebook"></i>
                   </a>
                 </li>
                 <li>
-                  <a href="#" class="color-instagram">
+                  <a href="instagram.com" class="color-instagram">
                     <i class="fab fa-instagram"></i>
                   </a>
                 </li>
                 <li>
-                  <a href="#" class="color-twitter">
+                  <a href="x.com" class="color-twitter">
                     <i class="fab fa-twitter"></i>
                   </a>
                 </li>
                 <li>
-                  <a href="#" class="color-youtube">
+                  <a href="youtube.com" class="color-youtube">
                     <i class="fab fa-youtube"></i>
                   </a>
                 </li>
                 <li>
-                  <a href="#" class="color-pinterest">
+                  <a href="pinterest.com" class="color-pinterest">
                     <i class="fab fa-pinterest"></i>
                   </a>
                 </li>
@@ -92,7 +81,15 @@
         </div>
         <!--/-->
         <!--widget-comments-->
-        {% include "components/comments.html" %}
+        <div class="widget mb-50">
+          <ul>
+            {% render_comment_list for page %}
+          </ul>
+          <div class="title">
+            <h5>Leave a reply</h5>
+          </div>
+          {% render_comment_form for page %}
+        </div>
       </div>
       <div class="col-lg-4 max-width">
         <!--widget-categories-->
